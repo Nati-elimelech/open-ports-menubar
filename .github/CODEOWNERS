@@ -1,0 +1,9 @@
+# CODEOWNERS for Open Ports Menubar
+# This file defines who must approve pull requests before they can be merged.
+# All pull requests require review from the repository owner.
+
+# Default owner for everything in the repo
+* @Nati-elimelech
+
+# Specific paths can have additional or different owners if needed in the future
+# For now, all code requires owner approval
