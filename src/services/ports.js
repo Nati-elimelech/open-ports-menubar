@@ -15,50 +15,56 @@ export async function scanListeningPorts() {
     });
     const lines = stdout.split(/\n/);
     const out = [];
-    let cur = { pid: null, command: null, proto: 'tcp', name: null, user: null };
+    let cur = { pid: null, command: null, proto: 'tcp', user: null };
+    
     for (const line of lines) {
       if (!line) continue;
       const key = line[0];
       const val = line.slice(1);
-      if (key === 'p') { // new record
-        if (cur.pid && cur.name && /:\d+/.test(cur.name)) {
-          const m = cur.name.match(/:(\d+)/);
-          if (m) out.push({
-            source: 'host',
-            pid: Number(cur.pid),
-            command: cur.command || '(unknown)',
-            proto: (cur.proto || 'tcp').toLowerCase(),
-            name: cur.name,
-            port: Number(m[1]),
-            user: cur.user || os.userInfo().username
-          });
-        }
-        cur = { pid: Number(val), command: null, proto: 'tcp', name: null, user: null };
+      
+      if (key === 'p') { // new process record
+        cur = { pid: Number(val), command: null, proto: 'tcp', user: null };
       } else if (key === 'c') {
         cur.command = val;
       } else if (key === 'P') {
         cur.proto = val;
-      } else if (key === 'n') {
-        // NAME looks like: 127.0.0.1:3000 (LISTEN)  or *:5173 (LISTEN)
-        cur.name = val.replace(/ \(LISTEN\)$/, '');
       } else if (key === 'u') {
         cur.user = val;
+      } else if (key === 'n') {
+        // Each 'n' line is a separate network connection for the current process
+        // NAME looks like: 127.0.0.1:3000 or *:5173 or [::1]:3000 or [::]:3000
+        const name = val.replace(/ \(LISTEN\)$/, '');
+        if (cur.pid && name) {
+          // Handle both IPv4 (127.0.0.1:3000) and IPv6 ([::1]:3000) formats
+          const m = name.match(/:(\d+)$/) || name.match(/\]:(\d+)$/);
+          if (m) {
+            out.push({
+              source: 'host',
+              pid: Number(cur.pid),
+              command: cur.command || '(unknown)',
+              proto: (cur.proto || 'tcp').toLowerCase(),
+              name: name,
+              port: Number(m[1]),
+              user: cur.user || os.userInfo().username
+            });
+          }
+        }
       }
     }
-    // push the last one if valid
-    if (cur.pid && cur.name && /:\d+/.test(cur.name)) {
-      const m = cur.name.match(/:(\d+)/);
-      if (m) out.push({
-        source: 'host',
-        pid: Number(cur.pid),
-        command: cur.command || '(unknown)',
-        proto: (cur.proto || 'tcp').toLowerCase(),
-        name: cur.name,
-        port: Number(m[1]),
-        user: cur.user || os.userInfo().username
-      });
+    
+    // Deduplicate ports that are listening on both IPv4 and IPv6
+    // Keep only one entry per pid:port combination, preferring IPv4 for display
+    const seen = new Set();
+    const deduped = [];
+    for (const item of out) {
+      const key = `${item.pid}:${item.port}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        deduped.push(item);
+      }
     }
-    return out;
+    
+    return deduped;
   } catch (err) {
     // lsof not found or no permissions; return empty
     return [];

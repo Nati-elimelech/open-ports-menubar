@@ -1,7 +1,7 @@
 {
   "name": "open-ports-menubar",
   "productName": "Open Ports Menubar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Open Ports Menubar - Menu bar app for macOS that lists open ports (incl. Docker), lets you browse/copy/kill, and ignore ports.",
   "author": "Nati Elimelech <nati@natielimelech.com> (https://www.natielimelech.com)",
   "license": "MIT",

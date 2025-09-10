@@ -4,6 +4,8 @@
 
 A lightning-fast macOS menu bar app for monitoring and managing network ports
 
+[**Website**](https://nati-elimelech.github.io/open-ports-menubar/) • [**Download**](https://github.com/Nati-elimelech/open-ports-menubar/releases) • [**Documentation**](https://github.com/Nati-elimelech/open-ports-menubar#readme)
+
 [![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/Nati-elimelech/open-ports-menubar/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-macOS%2011%2B-lightgrey)](https://www.apple.com/macos/)

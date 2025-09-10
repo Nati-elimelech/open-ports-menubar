@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1] - 2025-01-10
+
+### Fixed
+- 🐛 Port scanning now correctly handles processes with multiple network connections
+- 🌐 Added support for IPv6 addresses in port detection
+- 🔧 Fixed duplicate port entries when processes listen on both IPv4 and IPv6
+- ⚡ Improved port scanning reliability and accuracy
+
 ## [1.0.0] - 2025-01-10
 
 ### Initial Release
