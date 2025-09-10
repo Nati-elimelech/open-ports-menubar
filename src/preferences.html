@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Preferences</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    
+    /* Light mode colors */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-window: #f6f6f6;
+        --bg-content: white;
+        --text-primary: #000000;
+        --text-secondary: #8e8e93;
+        --text-tertiary: #c7c7cc;
+        --border-color: #e5e5e5;
+        --hover-bg: #f2f2f2;
+        --input-bg: white;
+        --shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.08);
+        --accent: #007aff;
+        --accent-hover: #0051d5;
+        --accent-bg: rgba(0, 122, 255, 0.1);
+        --control-bg: #f2f2f7;
+      }
+    }
+    
+    /* Dark mode colors */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-window: #2a2a2c;
+        --bg-content: #1c1c1e;
+        --text-primary: #ffffff;
+        --text-secondary: #98989d;
+        --text-tertiary: #48484a;
+        --border-color: #38383a;
+        --hover-bg: #3a3a3c;
+        --input-bg: #1c1c1e;
+        --shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.4);
+        --accent: #0a84ff;
+        --accent-hover: #0968c3;
+        --accent-bg: rgba(10, 132, 255, 0.2);
+        --control-bg: #2c2c2e;
+      }
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      background: var(--bg-window);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+    
+    .window-content {
+      padding: 20px;
+    }
+    
+    .window-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    
+    .pref-group {
+      background: var(--bg-content);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    
+    .pref-header {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--control-bg);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .pref-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      min-height: 44px;
+    }
+    
+    .pref-item:last-child {
+      border-bottom: none;
+    }
+    
+    .pref-label {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+    
+    .pref-sublabel {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    
+    /* Slider styling */
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .slider-value {
+      min-width: 40px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-secondary);
+    }
+    
+    input[type="range"] {
+      width: 180px;
+      cursor: pointer;
+    }
+    
+    /* Switch toggle - native macOS size */
+    .switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--text-tertiary);
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 1px;
+      bottom: 1px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    
+    input:checked + .switch-slider {
+      background: var(--accent);
+    }
+    
+    input:checked + .switch-slider:before {
+      transform: translateX(16px);
+    }
+    
+    /* Textarea */
+    .textarea-container {
+      padding: 16px;
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px;
+      background: var(--control-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 12px;
+      resize: vertical;
+      transition: all 0.2s;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    
+    .help-text {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="window-content">
+    <h1 class="window-title">Preferences</h1>
+    
+    <!-- General Settings -->
+    <div class="pref-group">
+      <div class="pref-header">General</div>
+      
+      <div class="pref-item">
+        <div class="pref-label">
+          Refresh Interval
+          <div class="pref-sublabel">How often to scan for open ports</div>
+        </div>
+        <div class="slider-container">
+          <input type="range" id="refreshInterval" min="1" max="60" value="5">
+          <span class="slider-value" id="refreshValue">5s</span>
+        </div>
+      </div>
+      
+      <div class="pref-item">
+        <div class="pref-label">Launch at Login</div>
+        <label class="switch">
+          <input type="checkbox" id="launchAtLogin">
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+    </div>
+    
+    <!-- Display Settings -->
+    <div class="pref-group">
+      <div class="pref-header">Display</div>
+      
+      <div class="pref-item">
+        <div class="pref-label">
+          Show Docker Containers
+          <div class="pref-sublabel">Display ports exposed by Docker containers in the menu</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="showDockerPorts" checked>
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+      
+      <div class="pref-item">
+        <div class="pref-label">
+          Show System Ports
+          <div class="pref-sublabel">Display ports used by macOS system services (like AirPlay, mDNS)</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="showSystemPorts" checked>
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+      
+      <div class="pref-item">
+        <div class="pref-label">
+          Show Service Icons
+          <div class="pref-sublabel">Display icons for known services (Node.js, MySQL, Docker, etc.)</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="showServiceIcons">
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+    </div>
+    
+    <!-- Ignore Rules -->
+    <div class="pref-group">
+      <div class="pref-header">Ignore Rules</div>
+      <div class="textarea-container">
+        <textarea id="ignoreRules" placeholder="Enter port numbers or regex patterns, one per line"></textarea>
+        <div class="help-text">
+          Enter port numbers (e.g., 3000) or regex patterns (e.g., /^(80|443)$/) to hide specific ports from the menu.
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="preferences.js"></script>
+</body>
+</html>
