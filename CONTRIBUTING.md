@@ -14,7 +14,9 @@ Before creating a new issue, please:
 
 ### Pull Requests
 
-**Important:** All pull requests require approval from the repository owner (@Nati-elimelech) before merging.
+**Important:** All pull requests require approval from the repository owner (@Nati-elimelech) before merging. Branch protection rules are enabled on the `main` branch.
+
+**Note for the repository owner:** As the repository owner, you can push directly to `main` when needed (admin bypass is enabled).
 
 1. Fork the repository
 2. Create a feature branch from `main`:
