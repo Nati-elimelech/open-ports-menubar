@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">$&gt; Icon (aligned)</title>
+  <desc id="desc">Bold $ followed by >, precisely vertically centered and close together</desc>
+  <style>
+    .stroke{
+      stroke:black;
+      stroke-width:12;           /* bolder */
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      fill:none;
+    }
+  </style>
+
+  <!-- $ : S-curve spans y=28..108 (center = 68) -->
+  <path class="stroke"
+        d="M48 28
+           C30 28, 30 48, 48 48
+           C66 48, 66 68, 48 68
+           C30 68, 30 88, 48 88
+           C66 88, 66 108, 48 108" />
+  <!-- vertical bars for $ -->
+  <line x1="48" y1="16" x2="48" y2="40" class="stroke"/>
+  <line x1="48" y1="96" x2="48" y2="120" class="stroke"/>
+
+  <!-- > : symmetric around y=68 to match $ center -->
+  <!-- move closer by decreasing the first/last x from 76 -> 74/72 if desired -->
+  <polyline class="stroke" points="76,48 108,68 76,88" />
+</svg>
