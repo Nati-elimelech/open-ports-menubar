@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.2] - 2025-01-10
+
+### Added
+- 🔔 Update notification badge in About menu when new version is available
+- 📢 System notification popup when update is detected
+- 🔄 Fallback to GitHub releases page when auto-update fails (unsigned app)
+- ⚡ Better error handling for update downloads
+
+### Improved
+- Enhanced update detection user experience
+- Clear visual indicators for available updates
+
 ## [1.0.1] - 2025-01-10
 
 ### Fixed

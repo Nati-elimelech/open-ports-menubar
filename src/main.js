@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, clipboard, shell, screen } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, clipboard, shell, screen, Notification, dialog } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -72,6 +72,15 @@ function setupAutoUpdater() {
       releaseNotes: info.releaseNotes,
       releaseName: info.releaseName
     };
+    
+    // Show system notification for update
+    const notification = new Notification({
+      title: 'Update Available',
+      body: `Open Ports Menubar v${info.version} is available. Click About menu to download.`,
+      silent: false
+    });
+    notification.show();
+    
     updateTrayMenu();
   });
   
@@ -445,7 +454,20 @@ function updateTrayMenu() {
     aboutSubmenu.push({ type: 'separator' });
     aboutSubmenu.push({
       label: `🔄 Download Update (v${updateAvailable.version})`,
-      click: () => autoUpdater.downloadUpdate()
+      click: () => {
+        // Try to download update, but if it fails (unsigned app), open GitHub releases
+        autoUpdater.downloadUpdate().catch(err => {
+          safeLog(`⏱️  [AI-PERF] Download failed: ${err.message}`);
+          dialog.showMessageBox({
+            type: 'info',
+            title: 'Manual Update Required',
+            message: `Automatic update failed (unsigned app). Opening GitHub releases page...`,
+            buttons: ['OK']
+          }).then(() => {
+            shell.openExternal(`https://github.com/Nati-elimelech/open-ports-menubar/releases/tag/v${updateAvailable.version}`);
+          });
+        });
+      }
     });
   }
   
@@ -457,8 +479,11 @@ function updateTrayMenu() {
     click: () => shell.openExternal('https://github.com/Nati-elimelech/open-ports-menubar')
   });
   
+  // Add update notification to About menu label if update is available
+  const aboutLabel = updateAvailable ? '🔴 About (Update Available)' : 'About';
+  
   menuItems.push({ 
-    label: 'About',
+    label: aboutLabel,
     submenu: aboutSubmenu
   });
   

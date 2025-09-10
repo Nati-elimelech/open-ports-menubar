@@ -1,0 +1,11 @@
+version: 1.0.1
+files:
+  - url: Open%20Ports%20Menubar-darwin-arm64-1.0.1.zip
+    sha512: 1JlI+Vzgr3JHs72qKqsXtOErOlWkZCWV4D0pYRjJKiqhLdPvMGEV7WZu/E3qM8jemnyRL4y0Lf17sEQARHpNfw==
+    size: 96967456
+  - url: Open%20Ports%20Menubar.dmg
+    sha512: mC/7/D4IZaKL5AobB88IRu6MdC1jlVsFcZjhtNpU1mQGTnRQsncyiESWJ2X2mY+8vGmxfd4OIm9zzrcCEuOh/w==
+    size: 96428683
+path: Open%20Ports%20Menubar.dmg
+sha512: mC/7/D4IZaKL5AobB88IRu6MdC1jlVsFcZjhtNpU1mQGTnRQsncyiESWJ2X2mY+8vGmxfd4OIm9zzrcCEuOh/w==
+releaseDate: '2025-09-10T15:17:35.000Z'
